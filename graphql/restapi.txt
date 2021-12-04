@@ -1,0 +1,8 @@
+< Wrapping a REST API with GraphQL >
+    : 내 client는 graphQL 언어로 요청하면 graphQL 서버가 API를 가지고 있는 다른 서비스에게 요청하면 그 서비스가 응답하고 graphQL가 고객에게 최종적으로 응답을 보냄
+    - why: 추가하고 삭제한 후 server을 껏다키면 movies는 원래 상태로 돌아감 memory에 있기때문에
+    - 어떤 backend (예. REST API)든 골라서 GraphQL 적용 가능
+
+- YTS API (among REST API)
+    영화 리스트 받기
+    API 키도 필요없고 매번 업데이트해줌 

@@ -1,0 +1,23 @@
+Install
+    (-D : --save-dev, i : install)
+
+    1. Install graphql
+        $ npm add graphql-yoga
+
+    2. Install nodemon
+        : index.js 파일을 주시하면서 내가 js 파일을 수정할 때마다 서버를 재시작해줌
+          (But, graphql 파일을 저장할 때는 작동x)
+        $ npm i nodemon -D
+        $ npm start ✅
+            by scripts of package.json
+            = $ node index.js (with some modes)
+
+    3. Install babel-node
+        : 코드를 더 좋게 작성하게 만들어줌
+        $ npm i @babel/cli -D
+        $ npm i @babel/core -D
+        $ npm i @babel/node -D
+        $ npm i @babel/preset-env -D
+
+        .babelrc 파일 생성 후 환경 설정
+            {"presets": ["@babel/preset-env"]}

@@ -1,0 +1,66 @@
+This file is resolvers.js to learn basic.
+
+// 1. Creating the first Query and Resolver
+// schema.graphql file : type Query {name: String!}
+
+// resolver
+// const resolvers = {
+//     Query: {
+//         name: () => nicolas
+//     }
+// };
+
+// 2. Extending the Schema
+// schema
+// type Nicolas {
+//     name: String!
+//     age: Int!
+//     gender: String!
+// } 
+// type Query {
+//     person: Nicolas!
+// } 
+
+// const nicolas = {
+//     name: "Nicolas",
+//     age: 18,
+//     gender: "female"
+// };
+
+// const resolvers = {
+//     Query: {
+//         person: () => nicolas
+//     }
+// };
+
+// Playground: 나이만 얻고 싶다면 왼쪽에 query{person{age}} 입력후 재생버튼 클릭
+
+// 2. Extending the Schema part two 59s
+// schema 
+// I have two types' query : people, person : (1.) people은 Person array를 리턴하고 (2.) 그 Person은 ID가 필수사항이고 Person을 반환
+// type Person {
+//     name: String!
+//     age: Int!
+//     gender: String!
+// } 
+// type Query {
+//     people: [Person]!
+//     person(id: Int!): Person // Creating Query with Arg / 오직 한 person에 ID로 접근하기 위해 / 뒤 Person은 !가 없으므로 선택사항(해당 person을 찾지 못하면 error안나고 null이라고 뜸 ; 예. 아이디 10번에 해당하는 사람이 없는데 id 10을 요청할 때)
+// } 
+
+import { people, getById } from "./db"
+
+const resolvers = {
+    Query: {
+        people: () => people,
+        person: (_, { id }) => getById(id) // Return getById() func 
+        // The 1st arg's _ is var name to pass the 1st / 2nd: 사용자가 {person(id:__){name}} 요청 시 밑출에 아이디를 넣음 아이디에 해당하는 person 얻으려고 / { id } = args.id
+        // console.log(args.id) // 사용자가 {person(id:1){name}} 을 요청하면 { id:1 } 출력됨    
+    }
+};
+
+// grahpQL Playground: 이 db에서 이름만 원한다면 query{people{name}} >> 모든 people의 이름을 반환
+// grahpQLPlayground: {person(id:1){name}} >> id가 1인 사람의 객체중 이름만 반환
+// 요청할때 앞에 qeury 생략 가능 (default라서) 따라서 mutation이면 mutation이라고 써야줘야함
+
+export default resolvers;

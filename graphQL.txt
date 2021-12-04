@@ -1,0 +1,89 @@
+Movie API with Graphql
+
+graphql server
+    : grahpQL Playground에서 고객이 GraphQL 언어로 query[질문]를 하면 index.js에 있는 graphQL server가 GraphQL의 Backend(resolvers.js 등)에서 query를 해결하고 요청한 부분만 GraphQL 언어이자 js object로 고객에게 반환
+
+    schema와 resolver을 필요로함
+
+    사용순서 : (index.js 에서) graphql server 생성 후 schema와 resolver 넣고 start() 후 (schema파일과 resolvers.js 생성 후 grahpQL Playground에서) 질문하기
+
+    API로 조정하거가 여러가질 섞어서 모양을 바꾸거나 할 수 있다??
+
+grahpQL Playground
+    : 단지 db 테스트용 
+    (내가 생성한 the first Query and Resolver 참고, resolvers.txt) Playground 왼쪽에 query{name} 을 작성하고 ["name" 요청] 실행버튼을 클릭(ctr+ent)하면, graphQL이 내 서버에서 schema.graphql 파일에서 해당 쿼리를 찾은 후 이 Query에 맞는 Resolvers를 resolvers.js에서 찾는다
+    
+    ✅ 실행법: $ npm start -> Graphql Server Running 가 터미널에 출력 -> localhost:4000
+
+요청 형식 3가지
+    - query(질문): db로부터 정보 얻기 -> frontend가 그 쿼리를 보냄 server가 받을 수 있게
+    - mutation(변형): 내가 (메로리상) db를 변형할 때
+        예) 영화 추가를 요청하면 (메모리상) db에 영화가 추가됨
+        영화 정보를 받을 때 Query를 하고, db 상태를 바꾸기 위해서 Mutation을 한다
+    - subscription(설명)
+
+schema
+    사용자로부터 받을 질문을 정의하고 그 정보를 db로 보내기
+    우리가 어떤 mutations과 Query들을 가졌는지 graphQL 서버에 알려주기  
+
+    예) type Query {name: String!} 
+        - 어떤 사용자가 "name"을 쿼리하면 사용자에게 resolvers가 답변을 필수적(!)으로 보내야되는데 이 때 답변은 string으로 줘야함 답을 못 하겠으면 에러 줌
+        - !가 없으면: 해당 값이 없어서 답을 못하면 아무것도 반환 안해도됨 (null)
+
+resolvers(해결자)
+    : 쿼리를 해결 ;db 입장에서 query는 문제이므로 이 query를 어떤한 방식으로 해결하겠다
+    예) 어떤 사용자가 name을 Query하면 Nicolas를 반환하는 함수로 답하도록 resolvers.js에서 코딩
+
+    - db나 API도 포함[갈 수] 가능 
+    - 분리: db부분은 db.js에 분리해서 export 처리하고 resolvers.js에서 import
+
+Two problems solved by GraphQL
+    1. Over-fetching
+        - 내가 요청한 영역의 정보보다, 많은 정보를 서버에서 받는 것 (비효율적) 
+        -> GraphQL로 Frontend가 DB에 오직 원하는 정보(예. 사용자명)만 요청 가능
+    2. Under-fetching
+        - 하나를 완성하기 위해 많은 소스를 요청해야할 때 발생
+        - 예) 인스타 앱을 시작하려면 피드, 알림, 사용자 프로필 이 세가지를 요쳥해야 한다.
+              ; 3가지 요청이 3번 오고가야 앱이 시작된다
+        - But, graphQL에선, 한개의 query로 만들어 한 번에 처리 가능
+    
+        예) 피드의 댓글과 좋아요 수, 알림을 원하고 그 알림을 확인했는지, 프로필 중 유저명과 프로필사진을 원할 때 -> 아래 쿼리 예만 보기
+
+        qeury와 resolvers 예
+            query {
+                feed {
+                    comments
+                    likeNumber
+                }
+                notifications {
+                    isRead
+                }
+                user {
+                    username
+                    profilePicture
+                }
+            }
+
+            아래는 resolvers
+            {
+                feed: [
+                    {
+                        comments:1,
+                        likeNumber: 20
+                    }
+                ],
+                notifications: [
+                    {
+                        isRead: true
+                    },
+                    {
+                        isRead: false
+                    }
+                ],
+                user: {
+                    username: "nico"
+                    profile: "http:"
+                }
+            }
+
+port error : Save resolvers.js

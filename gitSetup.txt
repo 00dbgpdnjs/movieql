@@ -1,0 +1,13 @@
+1. github 사이트에서 repo 생성
+    description: Movie API with Graphql
+    check readme
+    gitignore: Node
+
+    After creating, and then copy its addr
+2. vsc에서 빈 폴더(movieql폴더) 생성후 $ npm init
+    description: Movie API with Graphql
+    git repository: (its addr; what you just copied after creating repo)
+    (optional) author: Sarah<00dbgpdnjs@naver.com>
+
+3. git remote add origin (repo addr)
+4. git pull origin main

@@ -1,0 +1,51 @@
+프로젝트 하기 전 연습
+
+let movies = [
+    {
+        id: 0,
+        name: "Star Wars - The new one",
+        score: 1
+    },
+    {
+        id: 1,
+        name: "Avengers - The new one",
+        score: 8
+    },
+    {
+        id: 2,
+        name: "The Godfather I",
+        score: 99
+    },
+    {
+        id: 3,
+        name: "Logan",
+        score: 2
+    }
+];
+
+export const getMovies = () => movies;
+
+export const getById = id => {
+    const filteredMovies = movies.filter(movie => movie.id === id);
+    return filteredMovies[0];
+};
+
+export const deleteMovie = id => {
+    const cleanedMovies = movies.filter(movie => movie.id !== id);
+    if (movies.length > cleanedMovies.length) { // 위 movies var에 4가지 영화가 들어있으므로 movies.length는 4 / cleanedMovies.length는 3 왜냐면 내가 원하는 아이디에 해당하는 한 영화를 제외한 나머지 영화
+        movies = cleanedMovies;
+        return true;
+    } else {
+        return false;
+    } // id에 해당하는 movie 삭제 성공 여부를 의미하므로 boolean형을 반환
+}; 
+
+export const addMovie = (name, score) => {
+    const newMovie = {
+        id: `${movies.length + 1}`,
+        name,
+        score
+    };
+    movies.push(newMovie);
+    return newMovie;
+}

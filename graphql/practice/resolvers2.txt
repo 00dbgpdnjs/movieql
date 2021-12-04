@@ -1,0 +1,38 @@
+프로젝트 하기 전 연습
+
+< schema >
+type Movie {
+    id: Int!
+    name: String!
+    score: Int!
+} 
+
+type Query {
+    movies: [Movie]!
+    movie(id: Int!): Movie
+} 
+
+type Mutation {
+    addMovie(name: String!, score: Int!): Movie!
+    deleteMovie(id: Int!): Boolean!
+}
+
+
+
+import { getMovies, getById, addMovie, deleteMovie } from "./db"
+
+const resolvers = {
+    Query: {
+        movies: () => getMovies(),
+        movie: (_, { id }) => getById(id)
+    },
+    Mutation: {
+        addMovie: (_, {name, score}) => addMovie(name, score),
+        deleteMovie: (_, {id}) => deleteMovie(id)
+    }
+};
+
+// grahpQL playground에서 { movies {score}} 요청
+// mutation {addMovie(name: "RockandRolla", score:9) {name}} >> 영화가 추가되고 {name}에 의해 추가된 영화의 name만 리턴함
+
+export default resolvers;
